@@ -13,5 +13,5 @@ export const currentISODatePreviousYear = `${
 }-${currentMonth}-${currentDate}`;
 
 export const currentISODateNextYear = `${
-  currentFullYear - 1
+  currentFullYear + 1
 }-${currentMonth}-${currentDate}`;

@@ -1,15 +1,11 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { fetchCurrentPopularGames } from "./actions/GamesAction";
+import Home from "./pages/Home";
+import GlobalStyles from "./styles/GlobalStyles";
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchCurrentPopularGames());
-  }, []);
   return (
     <div className="App">
-      <h1>Hello world</h1>
+      <GlobalStyles />
+      <Home />
     </div>
   );
 }
