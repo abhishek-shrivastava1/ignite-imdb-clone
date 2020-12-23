@@ -16,3 +16,7 @@ export const GET_GAME_DETAILS_BY_ID = (id) => {
 export const GET_GAME_SCREENSHOTS_BY_ID = (id) => {
   return createUrl(`games/${id}/screenshots`);
 };
+
+export const SEARCH_GAMES = (searchParam) => {
+  return createUrl(`games?search=${searchParam}&page_size=9`);
+};

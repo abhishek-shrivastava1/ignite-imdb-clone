@@ -1,8 +1,15 @@
+// Styles and animations
 import styled from "styled-components";
 import { motion } from "framer-motion";
+// Actions
 import { fetchGameDetailsById } from "../actions/GameDetailsAction";
+// Redux
 import { useDispatch } from "react-redux";
+// Router
 import { Link } from "react-router-dom";
+// Utils
+import { getResizedImageUrl } from "../utils/CommonUtils";
+import { popUp } from "../styles/Animation";
 
 const GameCard = ({ id, name, releaseDate, backgroundImage }) => {
   const dispatch = useDispatch();
@@ -12,11 +19,21 @@ const GameCard = ({ id, name, releaseDate, backgroundImage }) => {
     dispatch(fetchGameDetailsById(id));
   };
   return (
-    <StyledCard onClick={fetchGameDetailsHandler}>
+    <StyledCard
+      layoutId={id.toString()}
+      onClick={fetchGameDetailsHandler}
+      variants={popUp}
+      animate="show"
+      initial="hidden"
+    >
       <Link to={`/games/${id}`}>
-        <h3>{name}</h3>
+        <motion.h3 layoutId={`h3 ${id.toString()}`}>{name}</motion.h3>
         <p>{releaseDate}</p>
-        <img src={backgroundImage} alt={name} />
+        <motion.img
+          layoutId={`imageId ${id.toString()}`}
+          src={getResizedImageUrl(backgroundImage, 640)}
+          alt={name}
+        />
       </Link>
     </StyledCard>
   );

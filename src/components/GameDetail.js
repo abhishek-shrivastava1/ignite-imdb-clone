@@ -1,9 +1,57 @@
+// Redux
 import { useSelector } from "react-redux";
+// Router
+import { useHistory } from "react-router-dom";
+// Styles and animations
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+// Utils
+import { getResizedImageUrl } from "../utils/CommonUtils";
+// Images
+import playstation from "../img/playstation.svg";
+import apple from "../img/apple.svg";
+import nintendo from "../img/nintendo.svg";
+import gameepad from "../img/gamepad.svg";
+import steam from "../img/steam.svg";
+import xbox from "../img/xbox.svg";
+import starEmpty from "../img/star-empty.png";
+import starFull from "../img/star-full.png";
 
-const GameDetail = () => {
+const GameDetail = ({ pathId }) => {
+  // function
+  const getPlatformImage = (platform) => {
+    switch (platform) {
+      case "Xbox Series S/X":
+        return xbox;
+      case "PlayStation 5":
+        return playstation;
+      case "PlayStation 4":
+        return playstation;
+      case "Xbox One":
+        return xbox;
+      case "PC":
+        return steam;
+      case "Nintendo Switch":
+        return nintendo;
+      case "iOS":
+        return apple;
+      default:
+        return gameepad;
+    }
+  };
+  // stars
+  const getStars = () => {
+    const stars = [];
+    const rating = Math.floor(game.rating);
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(<img key={i} src={starFull} alt="full start" />);
+      } else {
+        stars.push(<img key={i} src={starEmpty} alt="empty start" />);
+      }
+    }
+    return stars;
+  };
   const history = useHistory();
   const { game, screenshots, isLoading } = useSelector(
     (state) => state.gameDetail
@@ -20,23 +68,34 @@ const GameDetail = () => {
     <>
       {!isLoading && (
         <StyledCardShadow className="shadow" onClick={exitGameDetailHandler}>
-          <StyledDetail>
+          <StyledDetail layoutId={pathId}>
             <StyledStats>
               <div className="rating">
-                <h3>{game.name}</h3>
+                <motion.h3 layoutId={`h3 ${pathId}`}>{game.name}</motion.h3>
                 <p>Rating: {game.rating}</p>
+                {getStars()}
               </div>
               <StyledInfo>
                 <h3>Platforms</h3>
                 <StyledPlatform>
                   {game.platforms.map((data) => {
-                    return <h3 key={data.platform.id}>{data.platform.name}</h3>;
+                    return (
+                      <img
+                        alt={data.platform.name}
+                        key={data.platform.id}
+                        src={getPlatformImage(data.platform.name)}
+                      />
+                    );
                   })}
                 </StyledPlatform>
               </StyledInfo>
             </StyledStats>
             <StyledMedia>
-              <img src={game.background_image} alt={game.name} />
+              <motion.img
+                src={getResizedImageUrl(game.background_image, 1280)}
+                alt={game.name}
+                layoutId={`imageId ${pathId}`}
+              />
             </StyledMedia>
             <StyledDescription>
               <p>{game.description}</p>
@@ -46,7 +105,7 @@ const GameDetail = () => {
                 return (
                   <img
                     key={screenshot.id}
-                    src={screenshot.image}
+                    src={getResizedImageUrl(screenshot.image, 1280)}
                     alt={game.name}
                   />
                 );
@@ -67,6 +126,7 @@ const StyledCardShadow = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 5;
   &::-webkit-scrollbar {
     width: 0.5rem;
   }
@@ -86,6 +146,7 @@ const StyledDetail = styled(motion.div)`
   background: white;
   color: black;
   position: absolute;
+  z-index: 10;
   left: 10%;
   img {
     width: 100%;
@@ -96,6 +157,11 @@ const StyledStats = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  img {
+    width: 2rem;
+    height: 2rem;
+    display: inline;
+  }
 `;
 
 const StyledInfo = styled(motion.div)`
@@ -105,9 +171,11 @@ const StyledInfo = styled(motion.div)`
 const StyledPlatform = styled(motion.div)`
   display: flex;
   justify-content: space-evenly;
-
+  align-items: center;
   img {
     margin-left: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 `;
 

@@ -1,5 +1,9 @@
 import axios from "axios";
-import { GET_GAME_DETAILS_BY_ID, GET_GAME_SCREENSHOTS_BY_ID } from "../api/Api";
+import {
+  GET_GAME_DETAILS_BY_ID,
+  GET_GAME_SCREENSHOTS_BY_ID,
+  SEARCH_GAMES,
+} from "../api/Api";
 
 export const fetchGameDetailsById = (id) => async (dispatch) => {
   dispatch({

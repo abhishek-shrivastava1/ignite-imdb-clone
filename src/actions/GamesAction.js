@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ALL_GAMES } from "../api/Api";
+import { GET_ALL_GAMES, SEARCH_GAMES } from "../api/Api";
 
 import {
   currentISODatePreviousYear,
@@ -27,5 +27,21 @@ export const fetchGames = () => async (dispatch) => {
       newGames: currentNewGames.data.results,
       upcomingGames: currentUpcomingGames.data.results,
     },
+  });
+};
+
+export const searchGames = (gameName) => async (dispatch) => {
+  const searchedGames = await axios.get(SEARCH_GAMES(gameName));
+  dispatch({
+    type: "FETCH_SEARCHED",
+    payload: {
+      searched: searchedGames.data.results,
+    },
+  });
+};
+
+export const clearGames = () => (dispatch) => {
+  dispatch({
+    type: "CLEAR_SEARCHED",
   });
 };
